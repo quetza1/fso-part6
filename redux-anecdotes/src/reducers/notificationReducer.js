@@ -1,25 +1,35 @@
 const initialState = ''
 const notificationReducer = (state = initialState, action) => {
   switch (action.type) {
-    case 'ADD-MSG':
-      return `you added "${action.payload}"`
-    case 'VOTE-MSG':
-      return `you voted "${action.payload}"`
+    case 'SET-MSG':
+      return action.payload
+    case 'CLEAR-MSG':
+      return action.payload
+
     default:
       return state
   }
 }
 
-export const addMessage = (anecdote) => {
-  return {
-    type: 'ADD-MSG',
-    payload: anecdote,
+export const setNotification = (text, sec) => {
+  return async (dispatch) => {
+    dispatch({
+      type: 'SET-MSG',
+      payload: text,
+    })
+    setTimeout(() => {
+      dispatch({
+        type: 'CLEAR-MSG',
+        payload: '',
+      })
+    }, sec * 1000)
   }
 }
-export const voteMessage = (content) => {
+
+export const clearNotification = () => {
   return {
-    type: 'VOTE-MSG',
-    payload: content,
+    type: 'CLEAR-MSG',
+    payload: '',
   }
 }
 

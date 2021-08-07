@@ -1,3 +1,4 @@
+import { createNew, vote } from '../services/anecdotes'
 const getId = () => (100000 * Math.random()).toFixed(0)
 
 const asObject = (anecdote) => {
@@ -30,19 +31,22 @@ const anecdoteReducer = (state = [], action) => {
 }
 
 export const voteAnecdote = (id) => {
-  return {
-    type: 'VOTE',
-    payload: id,
+  return async (dispatch) => {
+    const voted = await vote(id)
+    dispatch({
+      type: 'VOTE',
+      payload: id,
+    })
   }
 }
 
 export const createAnecdote = (anecdote) => {
-  console.log('lkjfldksajlk')
-  console.log(anecdote)
-  console.log('lkjfldksajlk')
-  return {
-    type: 'CREATE',
-    payload: asObject(anecdote),
+  return async (dispatch) => {
+    const newAnecdote = await createNew(anecdote)
+    dispatch({
+      type: 'CREATE',
+      payload: newAnecdote,
+    })
   }
 }
 
